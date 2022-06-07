@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ZaloCardSample">
+        <attr name="headingName" format="string" />
+        <attr name="contentName" format="string" />
+        <attr name="imageSrc" format="integer" />
+    </declare-styleable>
+</resources>

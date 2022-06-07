@@ -2,8 +2,11 @@ package com.quangln2.customviewdemo
 
 import android.content.Context
 import android.content.res.Resources
+import android.content.res.TypedArray
 import android.graphics.*
 import android.util.AttributeSet
+import android.util.Log
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import kotlin.math.min
@@ -17,7 +20,21 @@ class ZaloCardSample : View {
         attrs: AttributeSet? = null,
         defStyleAttr: Int = 0
     ) : super(context, attrs, defStyleAttr) {
+        attributeArray = context.obtainStyledAttributes(attrs, R.styleable.ZaloCardSample, defStyleAttr, 0)
+        try{
+            headingName = attributeArray?.getString(R.styleable.ZaloCardSample_headingName).toString()
+            contentName = attributeArray?.getString(R.styleable.ZaloCardSample_contentName).toString()
+            imageSrc = attributeArray?.getResourceId(R.styleable.ZaloCardSample_imageSrc, -1)!!
+        } finally {
+            attributeArray?.recycle()
+        }
     }
+    private var headingName = ""
+    private var contentName = ""
+    private var imageSrc = R.drawable.ic_launcher_foreground
+    private var attributeArray: TypedArray? = null
+
+
     private val avatarPosition: PointF = PointF(0f, 0f)
     private val headingPosition: PointF = PointF(0f, 0f)
     private val subHeadingPosition: PointF = PointF(0f, 0f)
@@ -104,26 +121,38 @@ class ZaloCardSample : View {
 
         headingPosition.x = 2 * radius + 2* padding
         headingPosition.y = radius / 2.0f + 2 * padding
-        canvas?.drawText("ZALO TECH FRESHER 2022", headingPosition.x, headingPosition.y, headingStyle)
+        canvas?.drawText(headingName, headingPosition.x, headingPosition.y, headingStyle)
 
         subHeadingPosition.x = 2 * radius + 2* PAD_SPACE
         subHeadingPosition.y = 1.25f * radius + 2 * PAD_SPACE
-        canvas?.drawText("Trung Tien: mấy anh mentor...", subHeadingPosition.x, subHeadingPosition.y, subHeadingStyle)
+        canvas?.drawText(contentName, subHeadingPosition.x, subHeadingPosition.y, subHeadingStyle)
 
         timePosition.x = width - 2 * padding
         timePosition.y = radius / 2.0f + 2 * padding
         canvas?.drawText("20:00", timePosition.x, timePosition.y, timeStyle)
 
-        var bitmap = BitmapFactory.decodeResource(resources, R.drawable.zalo_tech_fresher)
+        var bitmap = BitmapFactory.decodeResource(resources,imageSrc)
         bitmap = getCircledBitmap(bitmap)
         val left = (avatarPosition.x - radius).toInt()
         val top = (avatarPosition.y - radius).toInt()
         val rect = Rect(0,0, bitmap.width, bitmap.height)
         val rectF = RectF(left.toFloat(), top.toFloat(), left + 2 * radius, top + 2 * radius)
         canvas?.drawBitmap(bitmap, rect, rectF, avatarStyle)
+    }
+    private var listener: OnClickListener? = null
 
-
-
+    override fun setOnClickListener(l: OnClickListener?) {
+        super.setOnClickListener(l)
+        listener = l
+    }
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        when (event?.action) {
+            MotionEvent.ACTION_UP -> {
+                listener?.onClick(this)
+            }
+        }
+        invalidate()
+        return true
     }
 
 }
