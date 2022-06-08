@@ -7,7 +7,6 @@
     tools:context=".MainActivity">
 
 
-
     <com.quangln2.customviewdemo.ZaloCardSample
         android:id="@+id/dialView"
         android:layout_width="wrap_content"

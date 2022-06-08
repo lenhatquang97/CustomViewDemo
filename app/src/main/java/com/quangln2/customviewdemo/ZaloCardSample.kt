@@ -5,7 +5,6 @@ import android.content.res.Resources
 import android.content.res.TypedArray
 import android.graphics.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -47,17 +46,17 @@ class ZaloCardSample : View {
         typeface = Typeface.DEFAULT
     }
     private val headingStyle = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        textSize = 50.0f
+        textSize = resources.getDimensionPixelSize(R.dimen.heading_size).toFloat()
         textAlign = Paint.Align.LEFT
         typeface = Typeface.DEFAULT_BOLD
     }
     private val subHeadingStyle = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        textSize = 40.0f
+        textSize = resources.getDimensionPixelSize(R.dimen.content_size).toFloat()
         textAlign = Paint.Align.LEFT
         typeface = Typeface.DEFAULT
     }
     private val timeStyle = Paint(Paint.ANTI_ALIAS_FLAG).apply {
-        textSize = 40.0f
+        textSize = resources.getDimensionPixelSize(R.dimen.content_size).toFloat()
         textAlign = Paint.Align.RIGHT
         typeface = Typeface.DEFAULT
     }
@@ -120,15 +119,15 @@ class ZaloCardSample : View {
         canvas?.drawCircle(avatarPosition.x, avatarPosition.y, radius, paint)
 
         headingPosition.x = 2 * radius + 2* padding
-        headingPosition.y = radius / 2.0f + 2 * padding
+        headingPosition.y = radius / 2.0f + 1.5f * padding
         canvas?.drawText(headingName, headingPosition.x, headingPosition.y, headingStyle)
 
         subHeadingPosition.x = 2 * radius + 2* PAD_SPACE
-        subHeadingPosition.y = 1.25f * radius + 2 * PAD_SPACE
+        subHeadingPosition.y = 1.25f * radius + 1.5f * PAD_SPACE
         canvas?.drawText(contentName, subHeadingPosition.x, subHeadingPosition.y, subHeadingStyle)
 
         timePosition.x = width - 2 * padding
-        timePosition.y = radius / 2.0f + 2 * padding
+        timePosition.y = radius / 2.0f + 1.5f * padding
         canvas?.drawText("20:00", timePosition.x, timePosition.y, timeStyle)
 
         var bitmap = BitmapFactory.decodeResource(resources,imageSrc)
